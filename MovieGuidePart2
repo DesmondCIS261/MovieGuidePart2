@@ -1,0 +1,50 @@
+def display_menu():
+    print("Menu")
+    print("1. Display all titles")
+    print("2. Add a title")
+    print("3. Delete a title")
+    print("4. Exit")
+def display_titles(titles):
+    print("Movie Titles:")
+    for i, title in enumerate(titles, 1):
+        print(f"{i}. {title}")
+def add_title(titles):
+    title = input("Enter a title to add: ")
+    titles.append(title)
+    write_titles_to_file(titles)
+def delete_title(titles):
+    display_titles(titles)
+    try:
+        index = int(input("Enter the number of the title to delete: ")) - 1
+        if 0 <= index < len(titles):
+            del titles[index]
+            write_titles_to_file(titles)
+        else:
+            print("Invalid number.")
+    except ValueError:
+        print("Invalid input.")
+
+def write_titles_to_file(titles):
+    with open("movies.txt", "w") as f:
+        for title in titles:
+            f.write(title + "\n")
+def main():
+    titles = []
+    with open("movies.txt", "r") as f:
+        for line in f:
+            titles.append(line.strip())
+    while True:
+        display_menu()
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            display_titles(titles)
+        elif choice == "2":
+            add_title(titles)
+        elif choice == "3":
+            delete_title(titles)
+        elif choice == "4":
+            break
+        else:
+            print("Invalid choice.")
+if __name__ == "__main__":
+    main()
